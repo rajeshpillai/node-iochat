@@ -54,6 +54,10 @@
                     socket.emit("send message", $message.val());
                     $message.val("");  // clear
                 })
+
+                socket.on("new message", function (data) {
+                    $chat.append("<div class='well'>" + data.msg + "</div>");
+                })
             })
         </script>
     </body>    
