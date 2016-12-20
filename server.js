@@ -13,4 +13,10 @@ server.listen(process.env.PORT || 9999, function (){
 
 app.get("/", function (req, res){
     res.sendFile(__dirname + "/index.html");
-})
+});
+
+io.on("connection", function (socket){
+    connections.push(socket);
+    console.log("Connected: %s sockets connected", connections.length);
+});
+
