@@ -26,14 +26,14 @@ io.sockets.on("connection", function (socket){
 
         users.splice(users.indexOf(socket.username), 1);
         updateUsernames();
-        
+
         connections.splice(connections.indexOf(socket), 1);
         console.log("Disconnected: %s sockets connected", connections.length);
     })
 
     socket.on("send message", function (data) {
         console.log(data);
-        io.sockets.emit("new message", {msg: data});
+        io.sockets.emit("new message", {msg: data, user: socket.username});
     })
 
     // New users
