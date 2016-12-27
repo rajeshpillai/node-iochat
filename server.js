@@ -1,5 +1,6 @@
 var express = require("express"),
     app = express(),
+    fs = require("fs"),
     server = require("http").createServer(app);
 
 var io = require("socket.io").listen(server);
@@ -36,6 +37,18 @@ io.sockets.on("connection", function (socket){
         io.sockets.emit("new message", {msg: data, user: socket.username});
     })
 
+    
+    socket.on("upload image", function (data) {
+        fs.readFile(__dirname + '/images/image-1.jpg', function(err, buf){
+            // it's possible to embed binary data
+            // within arbitrarily-complex objects
+            io.sockets.emit('receive image', { image: true, buffer: buf.toString('base64') });
+            console.log('image file is initialized');
+        });
+    })
+
+
+    
     // New users
     socket.on("new user", function (data, callback) {
         callback(true);

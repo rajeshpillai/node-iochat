@@ -19,6 +19,8 @@
 
 
     <body>
+        <canvas id="canvas" width=300 height=300></canvas>
+
         <div class="container">
             <div id="userFormArea" class="row">
                 <div class="col-md-12">
@@ -81,6 +83,8 @@
                     e.preventDefault();
                     socket.emit("send message", $message.val());
                     $message.val("");  // clear
+
+                    socket.emit("upload image"); // todo:
                 });
 
                 $userForm.submit(function (e) {  
@@ -104,6 +108,16 @@
                         html += "<li class='list-group-item'>" + data[i] + "</li>";
                     }
                     $users.html(html);
+                });
+
+                socket.on("receive image", function(info) {
+                    var ctx = document.getElementById('canvas').getContext('2d');
+
+                    if (info.image) {
+                        var img = new Image();
+                        img.src = 'data:image/jpeg;base64,' + info.buffer;
+                        ctx.drawImage(img, 0, 0);
+                    }
                 });
 
             })
